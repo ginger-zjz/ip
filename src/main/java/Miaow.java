@@ -14,6 +14,10 @@ public class Miaow {
 
         Scanner scanner = new Scanner(System.in);
 
+        String[] items = new String[100];
+        int itemCount = 0;
+
+
         while (true) {
             String command = scanner.nextLine();
 
@@ -23,14 +27,19 @@ public class Miaow {
                 System.out.println("Miaow: Bye. Hope to see you again soon!\n" +
                         "____________________________________________________________\n");
                 break;
-            } else {
-                System.out.println("Miaow: " + command);
+            } else if (command.equals("list")) {
+                for (int i = 0; i < itemCount; i++) {
+                    System.out.println(" " + (i + 1) + ". " + items[i]);
+                }
+                System.out.println("____________________________________________________________");
             }
+            else {
+                items[itemCount] = command;
+                itemCount++;
 
-            //System.out.println(" " + command);
-            System.out.println(
-                    "____________________________________________________________"
-            );
+                System.out.println("Miaow added: " + command);
+                System.out.println("____________________________________________________________");
+            }
         }
         //
     }
