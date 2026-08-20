@@ -8,13 +8,13 @@ public class Miaow {
                 "          `-    \\`_`\"'-\n" +
                 "Hello! I'm Miaow.\n" +
                 "What can I do for you?\n" +
-                "____________________________________________________________\n";
+                "____________________________________________________________";
         System.out.println(banner);
 
 
         Scanner scanner = new Scanner(System.in);
 
-        String[] items = new String[100];
+        Task[] items = new Task[100];
         int itemCount = 0;
 
 
@@ -25,16 +25,27 @@ public class Miaow {
 
             if (command.equals("bye")) {
                 System.out.println("Miaow: Bye. Hope to see you again soon!\n" +
-                        "____________________________________________________________\n");
+                        "____________________________________________________________");
                 break;
             } else if (command.equals("list")) {
                 for (int i = 0; i < itemCount; i++) {
                     System.out.println(" " + (i + 1) + ". " + items[i]);
                 }
                 System.out.println("____________________________________________________________");
-            }
-            else {
-                items[itemCount] = command;
+            } else if (command.startsWith("mark ")) {
+                int taskNumber = Integer.parseInt(command.substring(5));
+                items[taskNumber - 1].mark();
+
+                System.out.println("Miaow: Marked task " + taskNumber);
+                System.out.println("____________________________________________________________");
+            } else if (command.startsWith("unmark ")) {
+                int taskNumber = Integer.parseInt(command.substring(7));
+                items[taskNumber - 1].unmark();
+
+                System.out.println("Miaow: Unmarked task " + taskNumber);
+                System.out.println("____________________________________________________________");
+            } else {
+                items[itemCount] = new Task(command);
                 itemCount++;
 
                 System.out.println("Miaow added: " + command);
