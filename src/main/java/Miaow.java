@@ -2,32 +2,50 @@ import java.util.Scanner;
 
 public class Miaow {
     private static Task createTask(String command) {
-        if (command.startsWith("todo ")) {
-            String description = command.substring(5);
-            return new Task(description);
+            if (command.startsWith("todo")) {
+                String description = command.substring(5).trim();
+                if (description.isEmpty()) {
+                    return null;
+                }
 
-        } else if (command.startsWith("deadline ")) {
-            String content = command.substring(9);
+                return new Task(description);
 
-            String[] parts = content.split(" /by ", 2);
-            Deadline deadline = new Deadline(parts[0]);
-            deadline.by(parts[1]);
+            } else if (command.startsWith("deadline")) {
+                String content = command.substring(9).trim();
 
-            return deadline;
+                String[] parts = content.split(" /by ", 2);
+                if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+                    return null;
+                }
 
-        } else if (command.startsWith("event ")) {
-            String content = command.substring(6);
+                Deadline deadline = new Deadline(parts[0].trim());
+                deadline.by(parts[1].trim());
 
-            String[] parts = content.split(" /from | /to ", 3);
+                return deadline;
 
-            Event event = new Event(parts[0]);
-            event.from(parts[1]);
-            event.to(parts[2]);
+            } else if (command.startsWith("event")) {
+                String content = command.substring(6);
 
-            return event;
-        }
+                String[] parts = content.split(" /from | /to ", 3);
+
+                Event event = new Event(parts[0]);
+                event.from(parts[1]);
+                event.to(parts[2]);
+
+                return event;
+            }
+
 
         return null;
+    }
+    private static boolean isValidTaskNumber(String command, String prefix, int itemCount) {
+        try {
+            int taskNumber = Integer.parseInt(command.substring(prefix.length()).trim());
+
+            return taskNumber >= 1 && taskNumber <= itemCount;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public static void main(String[] args) {
@@ -62,17 +80,40 @@ public class Miaow {
                 }
                 System.out.println("____________________________________________________________");
             } else if (command.startsWith("mark ")) {
-                int taskNumber = Integer.parseInt(command.substring(5));
-                items[taskNumber - 1].mark();
+                if (!isValidTaskNumber(command, "mark ", itemCount)) {
+                    System.out.println("Miaow: Invalid task number.");
+                } else {
+                    int taskNumber = Integer.parseInt(command.substring(5));
+                    items[taskNumber - 1].mark();
 
-                System.out.println("Miaow: Marked task " + taskNumber);
+                    System.out.println("Miaow: Marked task " + taskNumber);
+                }
                 System.out.println("____________________________________________________________");
             } else if (command.startsWith("unmark ")) {
-                int taskNumber = Integer.parseInt(command.substring(7));
-                items[taskNumber - 1].unmark();
+                if (!isValidTaskNumber(command, "unmark ", itemCount)) {
+                    System.out.println("Miaow: Invalid task number.");
+                } else {
+                    int taskNumber = Integer.parseInt(command.substring(7).trim());
+                    items[taskNumber - 1].unmark();
 
-                System.out.println("Miaow: Unmarked task " + taskNumber);
+                    System.out.println("Miaow: Unmarked task " + taskNumber);
+                }
+
                 System.out.println("____________________________________________________________");
+            }  else if (command.equals("todo")) {
+            System.out.println("Miaow: Add task name.");
+            System.out.println("____________________________________________________________");
+
+            } else if (command.equals("deadline")) {
+            System.out.println("Miaow: Add task name and deadline.");
+            System.out.println("Example: deadline return book /by Sunday");
+            System.out.println("____________________________________________________________");
+
+            } else if (command.equals("event")) {
+                System.out.println("Miaow: Add task name, start time, and end time.");
+                System.out.println("Example: event meeting /from Monday 2pm /to 4pm");
+                System.out.println("____________________________________________________________");
+
             } else {
             Task task = createTask(command);
 
@@ -90,6 +131,6 @@ public class Miaow {
             System.out.println("____________________________________________________________");
         }
         }
-        //
+
     }
 }
