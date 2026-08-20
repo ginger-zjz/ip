@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Miaow {
@@ -7,41 +8,29 @@ public class Miaow {
                 if (description.isEmpty()) {
                     return null;
                 }
-
                 return new Task(description);
-
             } else if (command.startsWith("deadline")) {
                 String content = command.substring(9).trim();
-
                 String[] parts = content.split(" /by ", 2);
                 if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
                     return null;
                 }
-
                 Deadline deadline = new Deadline(parts[0].trim());
                 deadline.by(parts[1].trim());
-
                 return deadline;
-
             } else if (command.startsWith("event")) {
                 String content = command.substring(6);
-
                 String[] parts = content.split(" /from | /to ", 3);
-
                 Event event = new Event(parts[0]);
                 event.from(parts[1]);
                 event.to(parts[2]);
-
                 return event;
             }
-
-
         return null;
     }
     private static boolean isValidTaskNumber(String command, String prefix, int itemCount) {
         try {
             int taskNumber = Integer.parseInt(command.substring(prefix.length()).trim());
-
             return taskNumber >= 1 && taskNumber <= itemCount;
         } catch (NumberFormatException e) {
             return false;
@@ -61,8 +50,8 @@ public class Miaow {
 
         Scanner scanner = new Scanner(System.in);
 
-        Task[] items = new Task[100];
-        int itemCount = 0;
+        ArrayList<Task> items = new ArrayList<>();
+        //int itemCount = 0;
 
 
         while (true) {
@@ -75,26 +64,39 @@ public class Miaow {
                         "____________________________________________________________");
                 break;
             } else if (command.equals("list")) {
-                for (int i = 0; i < itemCount; i++) {
-                    System.out.println(" " + (i + 1) + ". " + items[i]);
+                for (int i = 0; i < items.size(); i++) {
+                    System.out.println(" " + (i + 1) + ". " + items.get(i));
+                }
+                System.out.println("____________________________________________________________");
+            } else if (command.startsWith("delete ")) {
+                if (!isValidTaskNumber(command, "delete ", items.size())) {
+                    System.out.println("Miaow: Invalid task number.");
+                } else {
+                    int taskNumber = Integer.parseInt(command.substring(7).trim());
+                    //items.get(taskNumber - 1).mark();
+                    Task deletedTask = items.remove(taskNumber - 1);
+
+                    System.out.println("Miaow: Deleted task:");
+                    System.out.println(" " + deletedTask);
+                    System.out.println("Now you have " + items.size() + " tasks in the list.");
                 }
                 System.out.println("____________________________________________________________");
             } else if (command.startsWith("mark ")) {
-                if (!isValidTaskNumber(command, "mark ", itemCount)) {
+                if (!isValidTaskNumber(command, "mark ", items.size())) {
                     System.out.println("Miaow: Invalid task number.");
                 } else {
                     int taskNumber = Integer.parseInt(command.substring(5));
-                    items[taskNumber - 1].mark();
+                    items.get(taskNumber - 1).mark();
 
                     System.out.println("Miaow: Marked task " + taskNumber);
                 }
                 System.out.println("____________________________________________________________");
             } else if (command.startsWith("unmark ")) {
-                if (!isValidTaskNumber(command, "unmark ", itemCount)) {
+                if (!isValidTaskNumber(command, "unmark ", items.size())) {
                     System.out.println("Miaow: Invalid task number.");
                 } else {
                     int taskNumber = Integer.parseInt(command.substring(7).trim());
-                    items[taskNumber - 1].unmark();
+                    items.get(taskNumber - 1).unmark();
 
                     System.out.println("Miaow: Unmarked task " + taskNumber);
                 }
@@ -118,14 +120,14 @@ public class Miaow {
             Task task = createTask(command);
 
             if (task != null) {
-                items[itemCount] = task;
-                itemCount++;
+                items.add(task);
+                //itemCount++;
 
                 System.out.println("Got it. I've added this task:");
                 System.out.println(" " + task);
-                System.out.println("Now you have " + itemCount + " tasks in the list.");
+                System.out.println("Now you have " + items.size() + " tasks in the list.");
             } else {
-                System.out.println("Miaow: That's not a task, try again!");
+                System.out.println("Miaow: That's not a command, try again!");
             }
 
             System.out.println("____________________________________________________________");
