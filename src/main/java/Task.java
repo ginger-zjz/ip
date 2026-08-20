@@ -17,6 +17,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "[" + (marked ? "X" : " ") + "] " + taskName;
+        return "[T]" + "[" + (marked ? "X" : " ") + "] " + taskName;
     }
 }

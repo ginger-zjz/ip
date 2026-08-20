@@ -1,6 +1,35 @@
 import java.util.Scanner;
 
 public class Miaow {
+    private static Task createTask(String command) {
+        if (command.startsWith("todo ")) {
+            String description = command.substring(5);
+            return new Task(description);
+
+        } else if (command.startsWith("deadline ")) {
+            String content = command.substring(9);
+
+            String[] parts = content.split(" /by ", 2);
+            Deadline deadline = new Deadline(parts[0]);
+            deadline.by(parts[1]);
+
+            return deadline;
+
+        } else if (command.startsWith("event ")) {
+            String content = command.substring(6);
+
+            String[] parts = content.split(" /from | /to ", 3);
+
+            Event event = new Event(parts[0]);
+            event.from(parts[1]);
+            event.to(parts[2]);
+
+            return event;
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
         String banner = " _._     _,-'\"\"`-._\n" +
                 "(,-.`._,'(       |\\`-/|\n" +
@@ -45,12 +74,21 @@ public class Miaow {
                 System.out.println("Miaow: Unmarked task " + taskNumber);
                 System.out.println("____________________________________________________________");
             } else {
-                items[itemCount] = new Task(command);
+            Task task = createTask(command);
+
+            if (task != null) {
+                items[itemCount] = task;
                 itemCount++;
 
-                System.out.println("Miaow added: " + command);
-                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(" " + task);
+                System.out.println("Now you have " + itemCount + " tasks in the list.");
+            } else {
+                System.out.println("Miaow: That's not a task, try again!");
             }
+
+            System.out.println("____________________________________________________________");
+        }
         }
         //
     }
