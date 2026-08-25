@@ -6,21 +6,29 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Storage {
-    private static final String FILE_PATH = "./data/miaow.txt";
+    private String filePath;
 
-    public static void saveTasks(ArrayList<Task> tasks) {
+    public Storage(String filepath) {
+        this.filePath = filepath;
+    }
+
+    public void createDirectoryIfNeeded() throws IOException {
+        Path path = Paths.get("./data");
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+    }
+
+    public void saveTasks(ArrayList<Task> tasks) {
         try {
             // Create directories if they don't exist
-            Path path = Paths.get("./data");
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
-                System.out.println("Created data directory: ./data/");
-            }
+            createDirectoryIfNeeded();
 
             // Write tasks to file
-            FileWriter writer = new FileWriter(FILE_PATH);
+            FileWriter writer = new FileWriter(filePath);
             for (Task task : tasks) {
                 writer.write(task.toFileFormat() + System.lineSeparator());
             }
@@ -30,18 +38,17 @@ public class Storage {
         }
     }
 
-    public static ArrayList<Task> loadTasks() {
+    public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(filePath);
 
         // Check if file exists
         if (!file.exists()) {
-            System.out.println("No existing data file found. Starting with empty task list.");
             return tasks;
         }
 
         try {
-            java.util.Scanner fileScanner = new java.util.Scanner(file);
+            Scanner fileScanner = new java.util.Scanner(file);
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
                 if (!line.isEmpty()) {
@@ -53,7 +60,7 @@ public class Storage {
             }
             fileScanner.close();
             System.out.println("Loaded " + tasks.size() + " tasks from file.");
-        } catch (java.io.FileNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Error loading tasks: File not found.");
         }
 
@@ -101,5 +108,17 @@ public class Storage {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public String formatTaskForFile(Task task) {
+        return task.toFileFormat();
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public boolean fileExists() {
+        return new File(filePath).exists();
     }
 }
