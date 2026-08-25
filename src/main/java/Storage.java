@@ -82,7 +82,7 @@ public class Storage {
                     // Deadline: D | 0/1 | description | by
                     if (parts.length < 4) return null;
                     Deadline deadline = new Deadline(description);
-                    deadline.by(parts[3]);
+                    deadline.by(parts[3].trim());
                     if (isDone) deadline.mark();
                     return deadline;
 
@@ -90,8 +90,8 @@ public class Storage {
                     // Event: E | 0/1 | description | from | to
                     if (parts.length < 5) return null;
                     Event event = new Event(description);
-                    event.from(parts[3]);
-                    event.to(parts[4]);
+                    event.from(parts[3].trim());
+                    event.to(parts[4].trim());
                     if (isDone) event.mark();
                     return event;
 

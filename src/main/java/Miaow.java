@@ -20,11 +20,15 @@ public class Miaow {
                 deadline.by(parts[1].trim());
                 return deadline;
             } else if (command.startsWith("event")) {
-                String content = command.substring(6);
+                String content = command.substring(6).trim();
                 String[] parts = content.split(" /from | /to ", 3);
-                Event event = new Event(parts[0]);
-                event.from(parts[1]);
-                event.to(parts[2]);
+                if (parts.length < 3 || parts[0].trim().isEmpty() ||
+                        parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+                    return null;
+                }
+                Event event = new Event(parts[0].trim());
+                event.from(parts[1].trim());
+                event.to(parts[2].trim());
                 return event;
             }
         return null;
@@ -35,6 +39,24 @@ public class Miaow {
             return taskNumber >= 1 && taskNumber <= itemCount;
         } catch (NumberFormatException e) {
             return false;
+        }
+    }
+
+    private static boolean isValidDate(String dateStr) {
+        try {
+            // Try yyyy-MM-dd
+            java.time.LocalDate.parse(dateStr);
+            return true;
+        } catch (java.time.format.DateTimeParseException e1) {
+            try {
+                // Try dd/MM/yyyy
+                java.time.format.DateTimeFormatter formatter =
+                        java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
+                java.time.LocalDate.parse(dateStr, formatter);
+                return true;
+            } catch (java.time.format.DateTimeParseException e2) {
+                return false;
+            }
         }
     }
 
@@ -125,13 +147,16 @@ public class Miaow {
             System.out.println("____________________________________________________________");
 
             } else if (command.equals("deadline")) {
-            System.out.println("Miaow: Add task name and deadline.");
-            System.out.println("Example: deadline return book /by Sunday");
-            System.out.println("____________________________________________________________");
+                System.out.println("Miaow: Add task name and deadline.");
+                System.out.println("Example: deadline return book /by 2019-12-02");
+                System.out.println("Example: deadline return book /by 2/12/2019");
+                System.out.println("Example: deadline return book /by 2/12/2019 1800");
+                System.out.println("____________________________________________________________");
 
             } else if (command.equals("event")) {
                 System.out.println("Miaow: Add task name, start time, and end time.");
-                System.out.println("Example: event meeting /from Monday 2pm /to 4pm");
+                System.out.println("Example: event meeting /from 2019-08-06 14:00 /to 16:00");
+                System.out.println("Example: event meeting /from 6/8/2019 1400 /to 1600");
                 System.out.println("____________________________________________________________");
 
             } else {
