@@ -11,6 +11,12 @@ public class Deadline extends Task {
     }
 
     @Override
+    public String toFileFormat() {
+        String statusIcon = marked ? "1" : "0";
+        return "D | " + statusIcon + " | " + taskName + " | " + by;
+    }
+
+    @Override
     public String toString() {
         return "[D]" + "[" + (marked ? "X" : " ") + "] " + taskName + " (by: " + by + ")";
     }
