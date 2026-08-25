@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -47,11 +48,18 @@ public class Miaow {
                 "____________________________________________________________";
         System.out.println(banner);
 
-
         Scanner scanner = new Scanner(System.in);
 
-        ArrayList<Task> items = new ArrayList<>();
+        //ArrayList<Task> items = new ArrayList<>();
         //int itemCount = 0;
+
+        // Load tasks from file if exists
+        ArrayList<Task> items = Storage.loadTasks();
+
+        if (items.size() > 0) {
+            System.out.println("loaded " + items.size() + " existing tasks.");
+            System.out.println("____________________________________________________________");
+        }
 
 
         while (true) {
@@ -60,6 +68,7 @@ public class Miaow {
             System.out.println("____________________________________________________________");
 
             if (command.equals("bye")) {
+                Storage.saveTasks(items);
                 System.out.println("Miaow: Bye. Hope to see you again soon!\n" +
                         "____________________________________________________________");
                 break;
@@ -79,6 +88,9 @@ public class Miaow {
                     System.out.println("Miaow: Deleted task:");
                     System.out.println(" " + deletedTask);
                     System.out.println("Now you have " + items.size() + " tasks in the list.");
+
+                    //save
+                    Storage.saveTasks(items);
                 }
                 System.out.println("____________________________________________________________");
             } else if (command.startsWith("mark ")) {
@@ -89,6 +101,9 @@ public class Miaow {
                     items.get(taskNumber - 1).mark();
 
                     System.out.println("Miaow: Marked task " + taskNumber);
+
+                    //save
+                    Storage.saveTasks(items);
                 }
                 System.out.println("____________________________________________________________");
             } else if (command.startsWith("unmark ")) {
@@ -99,6 +114,9 @@ public class Miaow {
                     items.get(taskNumber - 1).unmark();
 
                     System.out.println("Miaow: Unmarked task " + taskNumber);
+
+                    //save
+                    Storage.saveTasks(items);
                 }
 
                 System.out.println("____________________________________________________________");
@@ -126,6 +144,9 @@ public class Miaow {
                 System.out.println("Got it. I've added this task:");
                 System.out.println(" " + task);
                 System.out.println("Now you have " + items.size() + " tasks in the list.");
+
+                //save
+                Storage.saveTasks(items);
             } else {
                 System.out.println("Miaow: That's not a command, try again!");
             }
