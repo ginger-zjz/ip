@@ -15,6 +15,10 @@ public class Task {
         this.marked = false;
     }
 
+    public String getStatusIcon() {
+        return marked ? "X" : " ";
+    }
+
     public String toFileFormat() {
         String statusIcon = marked ? "1" : "0";
         return "T | " + statusIcon + " | " + taskName;
