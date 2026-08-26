@@ -1,3 +1,8 @@
+package Miaow.Storage;
+
+import Miaow.Task.Deadline;
+import Miaow.Task.Event;
+import Miaow.Task.Task;
 
 import java.io.File;
 import java.io.FileWriter;

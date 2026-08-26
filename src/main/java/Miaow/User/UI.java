@@ -1,3 +1,9 @@
+package Miaow.User;
+
+import Miaow.Task.Deadline;
+import Miaow.Task.Event;
+import Miaow.Task.Task;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 

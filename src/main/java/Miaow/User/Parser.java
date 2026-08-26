@@ -1,10 +1,16 @@
+package Miaow.User;
+
+import Miaow.Task.Deadline;
+import Miaow.Task.Event;
+import Miaow.Task.Task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Parser {
-    enum CommandType {
+    public enum CommandType {
         BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN, INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
     }
 
