@@ -1,10 +1,10 @@
-package Miaow;
+package miaow;
 
-import Miaow.Storage.Storage;
-import Miaow.Storage.TaskList;
-import Miaow.Task.Task;
-import Miaow.User.Parser;
-import Miaow.User.UI;
+import miaow.storage.Storage;
+import miaow.storage.TaskList;
+import miaow.task.Task;
+import miaow.user.Parser;
+import miaow.user.UI;
 
 import java.util.ArrayList;
 
