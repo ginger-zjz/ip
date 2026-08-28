@@ -1,4 +1,4 @@
-package Miaow.Task;
+package miaow.task;
 
 public class Task {
     String taskName;
@@ -7,6 +7,14 @@ public class Task {
     public Task(String name) {
         this.taskName = name;
         this.marked = false;
+    }
+
+    public boolean isDone() {
+        return this.marked;
+    }
+
+    public String getDescription() {
+        return this.taskName;
     }
 
     public void mark() {

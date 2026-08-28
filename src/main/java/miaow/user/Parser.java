@@ -1,8 +1,8 @@
-package Miaow.User;
+package miaow.user;
 
-import Miaow.Task.Deadline;
-import Miaow.Task.Event;
-import Miaow.Task.Task;
+import miaow.task.Deadline;
+import miaow.task.Event;
+import miaow.task.Task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
