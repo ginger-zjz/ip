@@ -13,6 +13,10 @@ public class UI {
     public UI() {
         this.scanner = new Scanner(System.in);
     }
+
+    /**
+     * Shows welcome message.
+     */
     public void showWelcome() {
         String banner = " _._     _,-'\"\"`-._\n" +
                 "(,-.`._,'(       |\\`-/|\n" +
@@ -23,23 +27,48 @@ public class UI {
                 "____________________________________________________________";
         System.out.println(banner);
     }
+
+    /**
+     * Shows goodbye message.
+     */
     public void showGoodbye() {
         System.out.println("Miaow: Bye. Hope to see you again soon!\n" +
                 "____________________________________________________________");
     }
+
+    /**
+     * Shows a line.
+     */
     public void showLine() {
         System.out.println("____________________________________________________________");
     }
+
+    /**
+     * Shows a task has been added.
+     * @param task Task to add.
+     * @param taskCount Updated number of tasks.
+     */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println("Miaow: Got it. I've added this task:");
         System.out.println(" " + task);
         showTaskCount(taskCount);
     }
+
+    /**
+     * Shows a task has been deleted.
+     * @param task Task to delete
+     * @param taskCount Updated number of tasks.
+     */
     public void showTaskDeleted(Task task, int taskCount) {
         System.out.println("Miaow: Deleted task:");
         System.out.println(" " + task);
         showTaskCount(taskCount);
     }
+
+    /**
+     * Shows list of tasks
+     * @param tasks Arraylist of tasks
+     */
     public void showTaskList(ArrayList<Task> tasks) {
         if (tasks.isEmpty()) {
             showEmptyTaskList();
@@ -50,26 +79,57 @@ public class UI {
         }
 
     }
+
+    /**
+     * Shows that a task has been marked
+     * @param task Task
+     * @param taskNumber Index of task
+     */
     public void showMarked(Task task, int taskNumber) {
         System.out.println("Miaow: Marked task " + taskNumber);
         System.out.println(" " + task);
     }
+
+    /**
+     * Shows that a task has been unmarked
+     * @param task Task
+     * @param taskNumber Index of task
+     */
     public void showUnmarked(Task task, int taskNumber) {
         System.out.println("Miaow: Unmarked task " + taskNumber);
         System.out.println(" " + task);
     }
+
+    /**
+     * Shows an error has occurred with a message.
+     * @param message Error message
+     */
     public void showError(String message) {
         System.out.println("Miaow: Error -- " + message);
     }
     public void showLoadingError() {
         System.out.println("Error loading tasks from file. Starting with empty task list.");
     }
+
+    /**
+     * Shows empty task list
+     */
     public void showEmptyTaskList() {
         System.out.println("No tasks in your list.");
     }
+
+    /**
+     * Scans for the next input line
+     * @return The next line as a String
+     */
     public String readCommand() {
         return scanner.nextLine();
     }
+
+    /**
+     * Shows number of tasks in the list
+     * @param count The number of tasks
+     */
     public void showTaskCount(int count) {
         System.out.println("Now you have " + count + " tasks in the list.");
     }

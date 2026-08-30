@@ -13,6 +13,10 @@ public class Deadline extends Task {
         //this.by = "";
     }
 
+    /**
+     * Sets the deadline as a date
+     * @param s String input for date
+     */
     public void by(String s) {
         this.by = s;
         try {
@@ -34,6 +38,9 @@ public class Deadline extends Task {
         return byDate;
     }
 
+    /**
+     * Returns a string of date formatted as required.
+     */
     public String getFormattedDate() {
         if (byDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -42,12 +49,18 @@ public class Deadline extends Task {
         return by;
     }
 
+    /**
+     * Returns a string of the task as stored in the file.
+     */
     @Override
     public String toFileFormat() {
         String statusIcon = marked ? "1" : "0";
         return "D | " + statusIcon + " | " + taskName + " | " + by;
     }
 
+    /**
+     * Returns a string of the task as it should be displayed in the list.
+     */
     @Override
     public String toString() {
         return "[D]" + "[" + (marked ? "X" : " ") + "] " + taskName + " (by: " + getFormattedDate() + ")";

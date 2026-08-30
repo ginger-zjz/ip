@@ -17,10 +17,20 @@ public class TaskList {
         this.tasks = tasks != null ? tasks : new ArrayList<>();
     }
 
+    /**
+     * Adds task to task list
+     * @param task The task to be added
+     */
     public void addTask(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Deletes task at index.
+     *
+     * @param index The index of task to be deleted.
+     * @return The deleted task.
+     */
     public Task deleteTask(int index) {
         if (!isValidIndex(index)) {
             throw new IndexOutOfBoundsException("Invalid task index: " + index);
@@ -28,6 +38,10 @@ public class TaskList {
         return tasks.remove(index);
     }
 
+    /**
+     * Mark a task as done.
+     * @param index The index of the task to be marked.
+     */
     public void markTask(int index) {
         if (!isValidIndex(index)) {
             throw new IndexOutOfBoundsException("Invalid task index: " + index);
@@ -35,6 +49,10 @@ public class TaskList {
         tasks.get(index).mark();
     }
 
+    /**
+     * Mark a task as undone.
+     * @param index The index of the task to be unmarked.
+     */
     public void unmarkTask(int index) {
         if (!isValidIndex(index)) {
             throw new IndexOutOfBoundsException("Invalid task index: " + index);
@@ -42,6 +60,11 @@ public class TaskList {
         tasks.get(index).unmark();
     }
 
+    /**
+     * Returns the task at index.
+     * @param index The index
+     * @return The task at index
+     */
     public Task getTask(int index) {
         if (!isValidIndex(index)) {
             throw new IndexOutOfBoundsException("Invalid task index: " + index);
@@ -49,14 +72,26 @@ public class TaskList {
         return tasks.get(index);
     }
 
+    /**
+     * Returns size of task list
+     * @return an integer value of size
+     */
     public int size() {
         return tasks.size();
     }
 
+    /**
+     * Checks if the list is empty
+     * @return Whether the list is empty
+     */
     public boolean isEmpty() {
         return tasks.isEmpty();
     }
 
+    /**
+     * Return the whole task list
+     * @return ArrayList of tasks
+     */
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks);
     }
@@ -67,6 +102,11 @@ public class TaskList {
 
     //public ArrayList<Event> getEventsOnDate(LocalDate date) {}
 
+    /**
+     * Checks if index is out-of-bounds.
+     * @param index the input index.
+     * @return A boolean value checking whether the index is within bounds.
+     */
     public boolean isValidIndex(int index) {
         return index <= tasks.size() && index >= 0;
     }

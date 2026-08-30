@@ -14,6 +14,11 @@ public class Parser {
         BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN, INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
     }
 
+    /**
+     * Sorts input into the enum Commandtype
+     * @param input String input.
+     * @return CommandType.
+     */
     public CommandType getCommandType(String input) {
         if (input.equals("bye")) {
             return CommandType.BYE;
@@ -42,6 +47,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Creates task with name input
+     * @param input Name of task
+     * @return a new task
+     */
     public Task parseTodo(String input) {
         if (!input.startsWith("todo ")) {
             return null;
@@ -53,6 +63,11 @@ public class Parser {
         return new Task(description);
     }
 
+    /**
+     * Creates deadline
+     * @param input Name of deadline task + deadline date
+     * @return a new deadline
+     */
     public Task parseDeadline(String input) {
         if (!input.startsWith("deadline ")) {
             return null;
@@ -67,6 +82,11 @@ public class Parser {
         return deadline;
     }
 
+    /**
+     * create a event
+     * @param input name of event, start date, end date
+     * @return a new event
+     */
     public Task parseEvent(String input) {
         if (!input.startsWith("event ")) {
             return null;
@@ -83,6 +103,12 @@ public class Parser {
         return event;
     }
 
+    /**
+     * gives number to task
+     * @param input name of task?
+     * @param commandPrefix type of task
+     * @return number of task
+     */
     public int parseTaskNumber(String input, String commandPrefix) {
         try {
             String numberStr = input.substring(commandPrefix.length()).trim();
@@ -96,6 +122,11 @@ public class Parser {
         return taskNumber >= 0 && taskNumber < taskCount;
     }
 
+    /**
+     * converts string to LocalDate
+     * @param dateStr String format of date
+     * @return a LocalDate representation
+     */
     public LocalDate parseDate(String dateStr) {
         try {
             return LocalDate.parse(dateStr);
@@ -109,6 +140,11 @@ public class Parser {
         }
     }
 
+    /**
+     * turns string into LocalDateTime
+     * @param dateTimeStr input date
+     * @return a LocalDateTime
+     */
     public LocalDateTime parseDateTime(String dateTimeStr) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -132,26 +168,6 @@ public class Parser {
                 }
             }
         }
-    }
-
-    public boolean isExitCommand(String input) {
-        return input.equals("bye");
-    }
-
-    public boolean isListCommand(String input) {
-        return input.equals("list");
-    }
-
-    public String extractDescription(String input, String commandprefix) {
-        if (!input.startsWith(commandprefix)) {
-            return null;
-        }
-        String description = input.substring(commandprefix.length()).trim();
-        return description.isEmpty() ? null : description;
-    }
-
-    public boolean isValidDateFormat(String dateStr) {
-        return parseDate(dateStr) != null;
     }
 
     /**

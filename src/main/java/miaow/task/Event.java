@@ -16,6 +16,10 @@ public class Event extends Task {
         //this.to = "";
     }
 
+    /**
+     * Sets the start date as a date
+     * @param s String input for date
+     */
     public void from(String s) {
         this.from = s;
         try {
@@ -33,6 +37,10 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Sets the due date as a date
+     * @param s String input for date
+     */
     public void to(String s) {
         this.to = s;
         try {
@@ -50,6 +58,10 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * converts a LocalDate into date
+     * @param dateTime LocalDate input for conversion
+     */
     public String getFormattedDate(LocalDate dateTime) {
         if (dateTime != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -58,20 +70,32 @@ public class Event extends Task {
         return "Invalid date";
     }
 
+    /**
+     * Returns the start date
+     */
     public String getFormattedFrom() {
         return getFormattedDate(fromDate);
     }
 
+    /**
+     * Returns the end date
+     */
     public String getFormattedTo() {
         return getFormattedDate(toDate);
     }
 
+    /**
+     * Returns a string of the task as stored in the file.
+     */
     @Override
     public String toFileFormat() {
         String statusIcon = marked ? "1" : "0";
         return "E | " + statusIcon + " | " + taskName + " | " + from + " | " + to;
     }
 
+    /**
+     * Returns a string of the task as it should be displayed in the list.
+     */
     @Override
     public String toString() {
         return "[E]" + "[" + (marked ? "X" : " ") + "] " + taskName + " (from: " + getFormattedFrom() +
