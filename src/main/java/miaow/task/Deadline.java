@@ -13,12 +13,13 @@ public class Deadline extends Task {
         //this.by = "";
     }
 
+
     /**
      * Sets the deadline as a date
-     * @param s String input for date
+     * @param date String input for date
      */
-    public void by(String s) {
-        this.by = s;
+    public void by(String date) {
+        this.by = date;
         try {
             // Try yyyy-MM-dd format first
             this.byDate = LocalDate.parse(by);
