@@ -13,8 +13,8 @@ public class Deadline extends Task {
         //this.by = "";
     }
 
-    public void by(String s) {
-        this.by = s;
+    public void by(String date) {
+        this.by = date;
         try {
             // Try yyyy-MM-dd format first
             this.byDate = LocalDate.parse(by);

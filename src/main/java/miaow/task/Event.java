@@ -16,11 +16,11 @@ public class Event extends Task {
         //this.to = "";
     }
 
-    public void from(String s) {
-        this.from = s;
+    public void from(String date) {
+        this.from = date;
         try {
             // Try yyyy-MM-dd format first
-            this.fromDate = LocalDate.parse(s);
+            this.fromDate = LocalDate.parse(date);
         } catch (DateTimeParseException e1) {
             try {
                 // Try dd/MM/yyyy format (e.g., 2/12/2019)
@@ -33,11 +33,11 @@ public class Event extends Task {
         }
     }
 
-    public void to(String s) {
-        this.to = s;
+    public void to(String date) {
+        this.to = date;
         try {
             // Try yyyy-MM-dd format first
-            this.toDate = LocalDate.parse(s);
+            this.toDate = LocalDate.parse(date);
         } catch (DateTimeParseException e1) {
             try {
                 // Try dd/MM/yyyy format (e.g., 2/12/2019)
