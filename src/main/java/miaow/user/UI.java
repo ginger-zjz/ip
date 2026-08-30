@@ -188,6 +188,24 @@ public class UI {
         scanner.close();
     }
 
+    /**
+     * shows results of search
+     * @param keyword Keyword used for searches
+     * @param matchingTasks Returned list of tasks
+     */
+    public void showFindResults(String keyword, ArrayList<Task> matchingTasks) {
+        System.out.println("Miaow: Here are the matching tasks in your list:");
+
+        if (matchingTasks.isEmpty()) {
+            System.out.println(" No matching tasks found.");
+        } else {
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println(" " + (i + 1) + ". " + matchingTasks.get(i));
+            }
+        }
+
+        showLine();
+    }
 }
 
 

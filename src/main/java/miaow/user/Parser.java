@@ -37,6 +37,10 @@ public class Parser {
             return CommandType.DEADLINE; // Empty deadline (will show help)
         } else if (input.equals("event")) {
             return CommandType.EVENT; // Empty event (will show help)
+        } else if (input.startsWith("find ")) {
+            return CommandType.FIND;
+        } else if (input.equals("find")) {
+            return CommandType.FIND;
         } else {
             return CommandType.UNKNOWN;
         }
@@ -166,5 +170,19 @@ public class Parser {
         }
         String dateStr = input.substring(prefix.length()).trim();
         return dateStr.isEmpty() ? null : dateStr;
+    }
+
+    /**
+     * Turns input into a String to search
+     * @param input Input string
+     * @return String used for searching
+     */
+    public String parseFindKeyword(String input) {
+        if (!input.startsWith("find")) {
+            return null;
+        }
+
+        String keyword = input.substring(4).trim();
+        return keyword.isEmpty() ? null : keyword;
     }
 }
