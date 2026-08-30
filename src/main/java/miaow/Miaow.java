@@ -119,6 +119,18 @@ public class Miaow {
                             ui.showInvalidTaskNumber();
                         }
                         break;
+
+                    case FIND:
+                        String keyword = parser.parseFindKeyword(command);
+
+                        if (keyword == null) {
+                            ui.showMessage("Please provide a keyword to search for.");
+                        } else {
+                            ArrayList<Task> matchingTasks =
+                                    tasks.findTasksByKeyword(keyword);
+                            ui.showFindResults(keyword, matchingTasks);
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 ui.showError("Miaow: An error occurred -- " + e.getMessage());

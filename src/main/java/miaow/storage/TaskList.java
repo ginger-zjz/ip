@@ -146,4 +146,26 @@ public class TaskList {
         return null;
     }
 
+    /**
+     * finds the list of tasks using a keyword
+     * @param keyword The keyword
+     * @return a list of tasks
+     */
+    public ArrayList<Task> findTasksByKeyword(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return matchingTasks;
+        }
+
+        String searchTerm = keyword.trim().toLowerCase();
+
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(searchTerm)) {
+                matchingTasks.add(task);
+            }
+        }
+
+        return matchingTasks;
+    }
 }
