@@ -1,14 +1,16 @@
 package miaow;
 
+import java.util.ArrayList;
 import miaow.storage.Storage;
 import miaow.storage.TaskList;
 import miaow.task.Task;
 import miaow.user.Parser;
 import miaow.user.UI;
 
-import java.util.ArrayList;
 
-
+/**
+ * Public class miaow
+ */
 public class Miaow {
     private Storage storage;
     private Parser parser;
@@ -16,9 +18,13 @@ public class Miaow {
     private UI ui;
 
     enum CommandType {
-        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN, INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
+        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN, INVALID_TODO, INVALID_DEADLINE,
+        INVALID_EVENT
     }
 
+    /**
+     * Constructor for class
+     */
     public Miaow() {
         this.ui = new UI();
         this.parser = new Parser();
@@ -35,6 +41,9 @@ public class Miaow {
         ui.showLoadingSuccess(loadedTasks.size());
     }
 
+    /**
+     * Runs the method
+     */
     public void run() {
         ui.showWelcome();
         while (true) {

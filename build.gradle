@@ -2,6 +2,12 @@ plugins {
     id 'java'
     id 'application'
     id 'com.gradleup.shadow' version '9.5.1'
+    id 'checkstyle'
+}
+
+checkstyle {
+    toolVersion = '10.17.0'
+    configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
 }
 
 java {
@@ -37,7 +43,7 @@ test {
 }
 
 application {
-    mainClass = 'miaow.Miaow'
+    mainClass = 'Miaow.Miaow'
 }
 
 jar {
