@@ -4,12 +4,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * event
+ */
 public class Event extends Task {
     private String from;
     private String to;
     private LocalDate fromDate;
     private LocalDate toDate;
 
+    /**
+     * event constructor
+     * @param name
+     */
     public Event(String name) {
         super(name);
         //this.from = "";
@@ -88,8 +95,8 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        String statusIcon = marked ? "1" : "0";
-        return "E | " + statusIcon + " | " + taskName + " | " + from + " | " + to;
+        String statusIcon = super.isDone() ? "1" : "0";
+        return "E | " + statusIcon + " | " + super.getDescription() + " | " + from + " | " + to;
     }
 
     /**
@@ -97,7 +104,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + "[" + (marked ? "X" : " ") + "] " + taskName + " (from: " + getFormattedFrom() +
-                " to: " + getFormattedTo() + ")";
+        return "[E]" + "[" + (super.isDone() ? "X" : " ") + "] " + super.getDescription() + " (from: "
+                + getFormattedFrom() + " to: " + getFormattedTo() + ")";
     }
 }

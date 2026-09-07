@@ -1,17 +1,24 @@
 package miaow.user;
 
-import miaow.task.Deadline;
-import miaow.task.Event;
-import miaow.task.Task;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import miaow.task.Deadline;
+import miaow.task.Event;
+import miaow.task.Task;
+
+/**
+ * parser class
+ */
 public class Parser {
+    /**
+     * command types
+     */
     public enum CommandType {
-        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN, INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
+        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN,
+                INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
     }
 
     /**
@@ -97,8 +104,8 @@ public class Parser {
         }
         String content = input.substring(6).trim();
         String[] parts = content.split(" /from | /to ", 3);
-        if (parts.length < 3 || parts[0].trim().isEmpty() ||
-                parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+        if (parts.length < 3 || parts[0].trim().isEmpty()
+                || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
             return null;
         }
         Event event = new Event(parts[0].trim());

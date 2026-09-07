@@ -1,17 +1,37 @@
 package miaow;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import miaow.gui.DialogBox;
 import miaow.storage.Storage;
 import miaow.storage.TaskList;
 import miaow.task.Task;
 import miaow.user.Parser;
 import miaow.user.UI;
+import miaow.MainWindow;
+
+
 
 
 /**
  * Public class miaow
  */
-public class Miaow {
+public class Miaow extends Application {
     private Storage storage;
     private Parser parser;
     private TaskList tasks;
@@ -29,16 +49,101 @@ public class Miaow {
         this.ui = new UI();
         this.parser = new Parser();
         this.storage = new Storage("./data/miaow.txt");
-//        try {
-//            tasks = new TaskList(storage.load());
-//        } catch (MiaowException e) {
-//            ui.showLoadingError();
-//            tasks = new TaskList();
-//        }
         ArrayList<Task> loadedTasks = storage.loadTasks();
         this.tasks = new TaskList(loadedTasks);
 
         ui.showLoadingSuccess(loadedTasks.size());
+    }
+
+    /**
+     * lowkey idk, some javafx thing
+     * @param stage starts this
+     */
+
+    @Override
+    public void start(Stage stage) {
+        try {
+            FXMLLoader fxmlLoader =
+                    new FXMLLoader(Miaow.class.getResource("/view/MainWindow.fxml"));
+
+            AnchorPane ap = fxmlLoader.load();
+
+            MainWindow controller = fxmlLoader.getController();
+            controller.setMiaow(this);
+
+            Scene scene = new Scene(ap);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * checks if command
+     * @param s string to check
+     */
+    public boolean isExitCommand(String s) {
+        return Objects.equals(s, "bye");
+    }
+
+    public String getResponse(String command) {
+        Parser.CommandType commandType = parser.getCommandType(command);
+
+        switch (commandType) {
+            case BYE:
+                storage.saveTasks(tasks.getTasks());
+                return "Goodbye!";
+
+            case LIST:
+                if (tasks.isEmpty()) {
+                    return "Your task list is empty.";
+                }
+                return tasks.toString();
+
+            case TODO:
+                Task todo = parser.parseTodo(command);
+                if (todo == null) {
+                    return "Invalid todo format.";
+                }
+
+                tasks.addTask(todo);
+                storage.saveTasks(tasks.getTasks());
+                return "Got it. I've added this task:\n" + todo;
+
+            case DEADLINE:
+                Task deadline = parser.parseDeadline(command);
+                if (deadline == null) {
+                    return "Invalid deadline format.";
+                }
+
+                tasks.addTask(deadline);
+                storage.saveTasks(tasks.getTasks());
+                return "Got it. I've added this task:\n" + deadline;
+
+            case EVENT:
+                Task event = parser.parseEvent(command);
+                if (event == null) {
+                    return "Invalid event format.";
+                }
+
+                tasks.addTask(event);
+                storage.saveTasks(tasks.getTasks());
+                return "Got it. I've added this task:\n" + event;
+
+            case FIND:
+                String keyword = parser.parseFindKeyword(command);
+
+                if (keyword == null) {
+                    return "Please provide a keyword to search for.";
+                }
+
+                ArrayList<Task> matchingTasks = tasks.findTasksByKeyword(keyword);
+                return matchingTasks.toString();
+
+            default:
+                return "Sorry, I don't understand that command.";
+        }
     }
 
     /**
@@ -140,6 +245,8 @@ public class Miaow {
                             ui.showFindResults(keyword, matchingTasks);
                         }
                         break;
+                    default:
+
                 }
             } catch (Exception e) {
                 ui.showError("Miaow: An error occurred -- " + e.getMessage());
@@ -152,4 +259,6 @@ public class Miaow {
     public static void main(String[] args) {
         new Miaow().run();
     }
+
+
 }

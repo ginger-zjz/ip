@@ -1,9 +1,5 @@
 package miaow.storage;
 
-import miaow.task.Deadline;
-import miaow.task.Event;
-import miaow.task.Task;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,6 +9,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import miaow.task.Deadline;
+import miaow.task.Event;
+import miaow.task.Task;
+
+
+/**
+ * Storage
+ */
 public class Storage {
     private String filePath;
 
@@ -101,24 +105,34 @@ public class Storage {
                 case "T":
                     // Todo: T | 0/1 | description
                     Task task = new Task(description);
-                    if (isDone) task.mark();
+                    if (isDone) {
+                        task.mark();
+                    }
                     return task;
 
                 case "D":
                     // Deadline: D | 0/1 | description | by
-                    if (parts.length < 4) return null;
+                    if (parts.length < 4) {
+                        return null;
+                    }
                     Deadline deadline = new Deadline(description);
                     deadline.by(parts[3].trim());
-                    if (isDone) deadline.mark();
+                    if (isDone) {
+                        deadline.mark();
+                    }
                     return deadline;
 
                 case "E":
                     // Event: E | 0/1 | description | from | to
-                    if (parts.length < 5) return null;
+                    if (parts.length < 5) {
+                        return null;
+                    }
                     Event event = new Event(description);
                     event.from(parts[3].trim());
                     event.to(parts[4].trim());
-                    if (isDone) event.mark();
+                    if (isDone) {
+                        event.mark();
+                    }
                     return event;
 
                 default:

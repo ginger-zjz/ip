@@ -1,11 +1,14 @@
 package miaow.storage;
 
+import java.util.ArrayList;
+
 import miaow.task.Deadline;
 import miaow.task.Event;
 import miaow.task.Task;
 
-import java.util.ArrayList;
-
+/**
+ * Tasklist
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
 
@@ -134,8 +137,8 @@ public class TaskList {
         } else if (command.startsWith("event")) {
             String content = command.substring(6).trim();
             String[] parts = content.split(" /from | /to ", 3);
-            if (parts.length < 3 || parts[0].trim().isEmpty() ||
-                    parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+            if (parts.length < 3 || parts[0].trim().isEmpty()
+                    || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
                 return null;
             }
             Event event = new Event(parts[0].trim());
