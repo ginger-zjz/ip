@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import miaow.task.Deadline;
 import miaow.task.Event;
@@ -48,9 +49,11 @@ public class Storage {
 
             // Write tasks to file
             FileWriter writer = new FileWriter(filePath);
-            for (Task task : tasks) {
-                writer.write(task.toFileFormat() + System.lineSeparator());
-            }
+            String content = tasks.stream()
+                    .map(Task::toFileFormat)
+                    .collect(Collectors.joining(System.lineSeparator()));
+
+            writer.write(content);
             writer.close();
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());

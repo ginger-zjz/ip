@@ -1,6 +1,7 @@
 package miaow.storage;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import miaow.task.Deadline;
 import miaow.task.Event;
@@ -162,13 +163,11 @@ public class TaskList {
 
         String searchTerm = keyword.trim().toLowerCase();
 
-        for (Task task : tasks) {
-            if (task.getDescription().toLowerCase().contains(searchTerm)) {
-                matchingTasks.add(task);
-            }
-        }
-
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.getDescription()
+                        .toLowerCase()
+                        .contains(searchTerm))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -177,12 +176,8 @@ public class TaskList {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-
-        for (Task task : tasks) {
-            result.append(task).append(System.lineSeparator());
-        }
-
-        return result.toString();
+        return tasks.stream()
+                .map(Task::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }
