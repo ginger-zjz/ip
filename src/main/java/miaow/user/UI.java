@@ -1,12 +1,16 @@
 package miaow.user;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import miaow.task.Deadline;
 import miaow.task.Event;
 import miaow.task.Task;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * UI
+ */
 public class UI {
     private Scanner scanner;
 
@@ -18,13 +22,13 @@ public class UI {
      * Shows welcome message.
      */
     public void showWelcome() {
-        String banner = " _._     _,-'\"\"`-._\n" +
-                "(,-.`._,'(       |\\`-/|\n" +
-                "    `-.-' \\ )-`( , o o)    MIAOW\n" +
-                "          `-    \\`_`\"'-\n" +
-                "Hello! I'm Miaow.\n" +
-                "What can I do for you?\n" +
-                "____________________________________________________________";
+        String banner = " _._     _,-'\"\"`-._\n"
+                + "(,-.`._,'(       |\\`-/|\n"
+                + "    `-.-' \\ )-`( , o o)    MIAOW\n"
+                + "          `-    \\`_`\"'-\n"
+                + "Hello! I'm Miaow.\n"
+                + "What can I do for you?\n"
+                + "____________________________________________________________";
         System.out.println(banner);
     }
 
@@ -32,8 +36,8 @@ public class UI {
      * Shows goodbye message.
      */
     public void showGoodbye() {
-        System.out.println("Miaow: Bye. Hope to see you again soon!\n" +
-                "____________________________________________________________");
+        System.out.println("Miaow: Bye. Hope to see you again soon!\n"
+                + "____________________________________________________________");
     }
 
     /**

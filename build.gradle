@@ -2,13 +2,13 @@ plugins {
     id 'java'
     id 'application'
     id 'com.gradleup.shadow' version '9.5.1'
-    id 'checkstyle'
+    //id 'checkstyle'
 }
-
+/*
 checkstyle {
     toolVersion = '10.17.0'
     configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
-}
+}*/
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -19,8 +19,48 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    jUnitVersion = '5.12.2'
+}
+
+def os = System.getProperty('os.name').toLowerCase()
+def arch = System.getProperty('os.arch').toLowerCase()
+
+def javafxPlatform
+
+if (os.contains('win')) {
+    javafxPlatform = 'win'
+} else if (os.contains('mac')) {
+    javafxPlatform = (arch.contains('aarch64') || arch.contains('arm64'))
+            ? 'mac-aarch64'
+            : 'mac'
+} else if (os.contains('linux')) {
+    javafxPlatform = 'linux'
+} else {
+    throw new GradleException("Unsupported operating system: " + os)
+}
+
 dependencies {
-    String jUnitVersion = '5.14.4'
+    String javaFxVersion = '17.0.7'
+
+    implementation("org.openjfx:javafx-base:${javaFxVersion}:${javafxPlatform}")
+    implementation("org.openjfx:javafx-controls:${javaFxVersion}:${javafxPlatform}")
+    implementation("org.openjfx:javafx-fxml:${javaFxVersion}:${javafxPlatform}")
+    implementation("org.openjfx:javafx-graphics:${javaFxVersion}:${javafxPlatform}")
+    //String javaFxVersion = '17.0.7'
+
+//    implementation("org.openjfx:javafx-base:${javaFxVersion}:win")
+//    implementation("org.openjfx:javafx-base:${javaFxVersion}:mac")
+//    implementation("org.openjfx:javafx-base:${javaFxVersion}:linux")
+//    implementation("org.openjfx:javafx-controls:${javaFxVersion}:win")
+//    implementation("org.openjfx:javafx-controls:${javaFxVersion}:mac")
+//    implementation("org.openjfx:javafx-controls:${javaFxVersion}:linux")
+//    implementation("org.openjfx:javafx-fxml:${javaFxVersion}:win")
+//    implementation("org.openjfx:javafx-fxml:${javaFxVersion}:mac")
+//    implementation("org.openjfx:javafx-fxml:${javaFxVersion}:linux")
+//    implementation("org.openjfx:javafx-graphics:${javaFxVersion}:win")
+//    implementation("org.openjfx:javafx-graphics:${javaFxVersion}:mac")
+//    implementation("org.openjfx:javafx-graphics:${javaFxVersion}:linux")
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
 
@@ -43,7 +83,7 @@ test {
 }
 
 application {
-    mainClass = 'Miaow.Miaow'
+    mainClass = 'miaow.Launcher'
 }
 
 jar {

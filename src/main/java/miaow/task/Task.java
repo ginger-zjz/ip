@@ -1,9 +1,16 @@
 package miaow.task;
 
+/**
+ * task
+ */
 public class Task {
-    String taskName;
-    boolean marked;
+    private String taskName;
+    private boolean marked;
 
+    /**
+     * task constructor
+     * @param name
+     */
     public Task(String name) {
         this.taskName = name;
         this.marked = false;

@@ -4,10 +4,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * deadline
+ */
 public class Deadline extends Task {
     private LocalDate byDate;
     private String by;
 
+    /**
+     * deadline constructor
+     * @param name
+     */
     public Deadline(String name) {
         super(name);
         //this.by = "";
@@ -55,8 +62,8 @@ public class Deadline extends Task {
      */
     @Override
     public String toFileFormat() {
-        String statusIcon = marked ? "1" : "0";
-        return "D | " + statusIcon + " | " + taskName + " | " + by;
+        String statusIcon = super.isDone() ? "1" : "0";
+        return "D | " + statusIcon + " | " + super.getDescription() + " | " + by;
     }
 
     /**
@@ -64,6 +71,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return "[D]" + "[" + (marked ? "X" : " ") + "] " + taskName + " (by: " + getFormattedDate() + ")";
+        return "[D]" + "[" + (super.isDone() ? "X" : " ") + "] " + super.getDescription() + " (by: "
+                + getFormattedDate() + ")";
     }
 }
