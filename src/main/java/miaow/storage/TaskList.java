@@ -171,4 +171,18 @@ public class TaskList {
 
         return matchingTasks;
     }
+
+    /**
+     * displays the elements in the list
+     * @return string of elements
+     */
+    @Override
+    public String toString() {
+        int length = tasks.size();
+        String returnStr = "";
+        for (int i = 0; i < length; i++) {
+            returnStr += tasks.get(i).toString() + "\n";
+        }
+        return returnStr;
+    }
 }
