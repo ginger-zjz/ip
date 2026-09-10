@@ -99,4 +99,11 @@ shadowJar {
 
 run {
     standardInput = System.in
+    enableAssertions = true
+}
+
+tasks.register('assertionCheck', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'miaow.AssertionCheck'
+    enableAssertions = true
 }

@@ -50,7 +50,10 @@ public class Miaow extends Application {
         this.parser = new Parser();
         this.storage = new Storage("./data/miaow.txt");
         ArrayList<Task> loadedTasks = storage.loadTasks();
+        assert loadedTasks != null : "Storage must return a task list";
+
         this.tasks = new TaskList(loadedTasks);
+        assert this.tasks != null : "TaskList must be initialised";
 
         ui.showLoadingSuccess(loadedTasks.size());
     }
@@ -88,7 +91,11 @@ public class Miaow extends Application {
     }
 
     public String getResponse(String command) {
+        assert command != null : "Command cannot be null";
+
         Parser.CommandType commandType = parser.getCommandType(command);
+        assert commandType != null : "Parser must return a command type";
+
 
         switch (commandType) {
             case BYE:
@@ -106,8 +113,14 @@ public class Miaow extends Application {
                 if (todo == null) {
                     return "Invalid todo format.";
                 }
+                else {
+                    assert !tasks.getTasks().contains(todo)
+                            : "Task should not already exist before adding it";
 
-                tasks.addTask(todo);
+                    tasks.addTask(todo);
+                }
+
+                //tasks.addTask(todo);
                 storage.saveTasks(tasks.getTasks());
                 return "Got it. I've added this task:\n" + todo;
 
