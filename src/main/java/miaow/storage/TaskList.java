@@ -111,8 +111,7 @@ public class TaskList {
      * @return A boolean value checking whether the index is within bounds.
      */
     public boolean isValidIndex(int index) {
-        return index <= tasks.size() && index >= 0;
-    }
+        return index >= 0 && index < tasks.size();    }
 
     public void clear() {
         this.tasks.clear();
@@ -178,11 +177,12 @@ public class TaskList {
      */
     @Override
     public String toString() {
-        int length = tasks.size();
-        String returnStr = "";
-        for (int i = 0; i < length; i++) {
-            returnStr += tasks.get(i).toString() + "\n";
+        StringBuilder result = new StringBuilder();
+
+        for (Task task : tasks) {
+            result.append(task).append(System.lineSeparator());
         }
-        return returnStr;
+
+        return result.toString();
     }
 }
