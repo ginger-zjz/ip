@@ -44,11 +44,6 @@ public class Task {
         this.marked = false;
     }
 
-    /*
-    public String getStatusIcon() {
-        return marked ? "X" : " ";
-    }*/
-
     /**
      * Returns a string of the task as stored in the file.
      */

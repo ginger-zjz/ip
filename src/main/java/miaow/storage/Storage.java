@@ -73,18 +73,21 @@ public class Storage {
             return tasks;
         }
 
-        try {
-            Scanner fileScanner = new java.util.Scanner(file);
+        try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
-                if (!line.isEmpty()) {
-                    Task task = parseTaskFromLine(line);
-                    if (task != null) {
-                        tasks.add(task);
-                    }
+
+                if (line.isEmpty()) {
+                    continue;
+                }
+
+                Task task = parseTaskFromLine(line);
+
+                if (task != null) {
+                    tasks.add(task);
                 }
             }
-            fileScanner.close();
+
             System.out.println("Loaded " + tasks.size() + " tasks from file.");
         } catch (IOException e) {
             System.out.println("Error loading tasks: File not found.");
