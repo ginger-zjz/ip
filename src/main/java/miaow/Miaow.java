@@ -153,7 +153,17 @@ public class Miaow extends Application {
 
                 ArrayList<Task> matchingTasks = tasks.findTasksByKeyword(keyword);
                 return matchingTasks.toString();
+            case DELETE:
+                int deleteIndex = parser.parseTaskNumber(command, "delete ");
 
+                if (!tasks.isValidIndex(deleteIndex)) {
+                    return "Invalid task number.";
+                }
+
+                Task deletedTask = tasks.deleteTask(deleteIndex);
+                storage.saveTasks(tasks.getTasks());
+
+                return "Deleted task:\n" + deletedTask;
             default:
                 return "Sorry, I don't understand that command.";
         }
