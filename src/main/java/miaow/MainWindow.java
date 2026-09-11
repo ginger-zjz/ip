@@ -47,7 +47,10 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
-        System.out.println("HANDLE USER INPUT CALLED");
+        assert userInput != null : "User input field must be injected";
+        assert dialogContainer != null : "Dialog container must be injected";
+        assert miaow != null : "Miaow must be injected before handling input";
+        //System.out.println("HANDLE USER INPUT CALLED");
 
         String input = userInput.getText().trim();
         System.out.println(input);
