@@ -164,6 +164,10 @@ public class Miaow extends Application {
                 storage.saveTasks(tasks.getTasks());
 
                 return "Deleted task:\n" + deletedTask;
+            case SORT:
+                tasks.sortChronologically();
+                storage.saveTasks(tasks.getTasks());
+                return "Tasks sorted chronologically.";
             default:
                 return "Sorry, I don't understand that command.";
         }

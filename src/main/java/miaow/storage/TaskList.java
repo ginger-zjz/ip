@@ -1,6 +1,9 @@
 package miaow.storage;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import miaow.task.Deadline;
@@ -168,6 +171,30 @@ public class TaskList {
                         .toLowerCase()
                         .contains(searchTerm))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    /**
+     * Sorts tasks according to time
+     */
+    public void sortChronologically() {
+        tasks.sort(Comparator.comparing(
+                TaskList::getTaskDate,
+                Comparator.nullsLast(Comparator.naturalOrder())
+        ));
+    }
+
+    private static LocalDate getTaskDate(Task task) {
+        if (task instanceof Deadline deadline) {
+           // LocalDate date = deadline.getByDate();
+
+            return deadline.getByDate();
+        }
+
+        if (task instanceof Event event) {
+            return event.getFromDateTime();
+        }
+
+        return null;
     }
 
     /**

@@ -1,6 +1,7 @@
 package miaow.task;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -88,6 +89,10 @@ public class Event extends Task {
      */
     public String getFormattedTo() {
         return getFormattedDate(toDate);
+    }
+
+    public LocalDate getFromDateTime() {
+        return this.fromDate;
     }
 
     /**
