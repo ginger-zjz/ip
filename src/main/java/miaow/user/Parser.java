@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import miaow.task.Deadline;
 import miaow.task.Event;
@@ -27,6 +28,12 @@ public class Parser {
      * @return CommandType.
      */
     public CommandType getCommandType(String input) {
+        if (input == null) {
+            return CommandType.UNKNOWN;
+        }
+
+        input = input.trim();
+
         if (input.equals("bye")) {
             return CommandType.BYE;
         } else if (input.equals("list")) {
@@ -37,29 +44,19 @@ public class Parser {
             return CommandType.UNMARK;
         } else if (input.startsWith("delete ")) {
             return CommandType.DELETE;
-        } else if (input.startsWith("todo ")) {
+        } else if (input.equals("todo") || input.startsWith("todo ")) {
             return CommandType.TODO;
-        } else if (input.startsWith("deadline ")) {
+        } else if (input.equals("deadline") || input.startsWith("deadline ")) {
             return CommandType.DEADLINE;
-        } else if (input.startsWith("event ")) {
+        } else if (input.equals("event") || input.startsWith("event ")) {
             return CommandType.EVENT;
-        } else if (input.equals("todo")) {
-            return CommandType.TODO; // Empty todo (will show help)
-        } else if (input.equals("deadline")) {
-            return CommandType.DEADLINE; // Empty deadline (will show help)
-        } else if (input.equals("event")) {
-            return CommandType.EVENT; // Empty event (will show help)
-        } else if (input.startsWith("find ")) {
-            return CommandType.FIND;
-        } else if (input.equals("find")) {
+        } else if (input.equals("find") || input.startsWith("find ")) {
             return CommandType.FIND;
         } else if (input.equals("sort")) {
             return CommandType.SORT;
-        } else if (input.equals("miaow")) {
-            return CommandType.MIAOW;
-        } else {
-            return CommandType.UNKNOWN;
         }
+
+        return CommandType.UNKNOWN;
     }
 
     /**
@@ -68,13 +65,22 @@ public class Parser {
      * @return a new task
      */
     public Task parseTodo(String input) {
-        if (input == null || !input.startsWith("todo ")) {
+        if (input == null) {
             return null;
         }
-        String description = input.substring(5).trim();
+
+        String cleanedInput = input.trim();
+
+        if (!cleanedInput.matches("todo\\s+.+")) {
+            return null;
+        }
+
+        String description = cleanedInput.substring(4).trim();
+
         if (description.isEmpty()) {
             return null;
         }
+
         return new Task(description);
     }
 
@@ -84,17 +90,33 @@ public class Parser {
      * @return a new deadline
      */
     public Task parseDeadline(String input) {
-        if (input == null || !input.startsWith("deadline ")) {
+        if (input == null) {
             return null;
         }
-        String content = input.substring(9).trim();
-        String[] parts = content.split(" /by ", 2);
-        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+
+        String cleanedInput = input.trim();
+
+        if (!cleanedInput.matches("deadline\\s+.+")) {
             return null;
         }
-        Deadline deadline = new Deadline(parts[0].trim());
-        deadline.by(parts[1].trim());
-        return deadline;
+
+        String content = cleanedInput.substring(8).trim();
+        String[] parts = content.split("\\s+/by\\s+", -1);
+
+        if (parts.length != 2
+                || parts[0].trim().isEmpty()
+                || parts[1].trim().isEmpty()
+                || parts[1].contains("/by")) {
+            return null;
+        }
+
+        try {
+            Deadline deadline = new Deadline(parts[0].trim());
+            deadline.by(parts[1].trim());
+            return deadline;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**
@@ -113,9 +135,39 @@ public class Parser {
             return null;
         }
         Event event = new Event(parts[0].trim());
-        event.from(parts[1].trim());
-        event.to(parts[2].trim());
-        return event;
+        try {
+            event.from(parts[1].trim());
+            event.to(parts[2].trim());
+            return event;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public LocalDate parseDate(String dateStr) {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            return null;
+        }
+
+        dateStr = dateStr.trim();
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("uuuu-MM-dd")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+            return LocalDate.parse(dateStr, formatter);
+        } catch (DateTimeParseException e) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter
+                        .ofPattern("d/M/uuuu")
+                        .withResolverStyle(ResolverStyle.STRICT);
+
+                return LocalDate.parse(dateStr, formatter);
+            } catch (DateTimeParseException e2) {
+                return null;
+            }
+        }
     }
 
     /**
@@ -135,24 +187,6 @@ public class Parser {
 
     private static boolean isValidTaskNumber(int taskNumber, int taskCount) {
         return taskNumber >= 0 && taskNumber < taskCount;
-    }
-
-    /**
-     * converts string to LocalDate
-     * @param dateStr String format of date
-     * @return a LocalDate representation
-     */
-    public LocalDate parseDate(String dateStr) {
-        try {
-            return LocalDate.parse(dateStr);
-        } catch (DateTimeParseException e1) {
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-                return LocalDate.parse(dateStr, formatter);
-            } catch (DateTimeParseException e2) {
-                return null;
-            }
-        }
     }
 
     /**

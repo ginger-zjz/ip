@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 
 import miaow.task.Deadline;
 import miaow.task.Event;
@@ -78,36 +78,44 @@ class ParserTest {
     @Test
     void eventParserRejectsNonIncreasingRanges() {
         assertNull(parser.parseEvent(
-                "event meeting /from 2026-01-02 10:00 /to 09:00"
+                "event meeting /from 2026-09-20 /to 2026-09-18"
         ));
 
         assertNull(parser.parseEvent(
-                "event meeting /from 2026-01-02 /to 2026-01-02"
+                "event meeting /from 2026-09-18 /to 2026-09-18"
         ));
     }
 
     @Test
-    void eventParserParsesDateAndTimeAndTimeOnlyEnd() {
+    void eventParserParsesDateOnlyValues() {
         Event event = (Event) parser.parseEvent(
-                "event meeting /from 2026-01-02 10:00 /to 11:30"
+                "event project meeting /from 2026-09-18 /to 2026-09-20"
         );
 
         assertEquals(
-                LocalDate.of(2026, 1, 2),
+                LocalDate.of(2026, 9, 18),
                 event.getFromDateTime()
         );
 
-        assertTrue(event.toString().contains("Jan 02 2026"));
+        assertEquals(
+                "Sept 18 2026",
+                event.getFormattedFrom()
+        );
+
+        assertEquals(
+                "Sept 20 2026",
+                event.getFormattedTo()
+        );
     }
 
     @Test
-    void dateParsersRejectImpossibleDates() {
+    void dateParserRejectsImpossibleDates() {
         assertNull(parser.parseDate("2026-02-30"));
-        assertNull(parser.parseDateTime("31/2/2026 1200"));
+        assertNull(parser.parseDate("31/2/2026"));
 
         assertEquals(
-                LocalDateTime.of(2026, 2, 3, 12, 0),
-                parser.parseDateTime("3/2/2026 1200")
+                LocalDate.of(2026, 9, 18),
+                parser.parseDate("2026-09-18")
         );
     }
 

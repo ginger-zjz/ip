@@ -3,6 +3,7 @@ package miaow.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * deadline
@@ -31,20 +32,30 @@ public class Deadline extends Task {
                     "Deadline date cannot be empty."
             );
         }
-        this.by = date;
+
+        String cleanedDate = date.trim();
+
+        DateTimeFormatter isoFormatter = DateTimeFormatter
+                .ofPattern("uuuu-MM-dd")
+                .withResolverStyle(ResolverStyle.STRICT);
+
+        DateTimeFormatter slashFormatter = DateTimeFormatter
+                .ofPattern("d/M/uuuu")
+                .withResolverStyle(ResolverStyle.STRICT);
+
         try {
-            // Try yyyy-MM-dd format first
-            this.byDate = LocalDate.parse(by);
-        } catch (DateTimeParseException e1) {
+            byDate = LocalDate.parse(cleanedDate, isoFormatter);
+        } catch (DateTimeParseException firstError) {
             try {
-                // Try dd/MM/yyyy format (e.g., 2/12/2019)
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-                this.byDate = LocalDate.parse(by, formatter);
-            } catch (DateTimeParseException e2) {
-                // If parsing fails, keep as string
-                this.byDate = null;
+                byDate = LocalDate.parse(cleanedDate, slashFormatter);
+            } catch (DateTimeParseException secondError) {
+                throw new IllegalArgumentException(
+                        "Invalid deadline date: " + date
+                );
             }
         }
+
+        by = cleanedDate;
     }
 
     public LocalDate getByDate() {

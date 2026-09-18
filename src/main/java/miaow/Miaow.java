@@ -147,6 +147,29 @@ public class Miaow extends Application {
 
                 return "Got it. I've added this task:\n" + deadline;
 
+            case MARK:
+                int markIndex = parser.parseTaskNumber(command, "mark ");
+
+                if (!tasks.isValidIndex(markIndex)) {
+                    return "Invalid task number.";
+                }
+
+                tasks.markTask(markIndex);
+                storage.saveTasks(tasks.getTasks());
+
+                return "Marked task:\n" + tasks.getTask(markIndex);
+
+            case UNMARK:
+                int unmarkIndex = parser.parseTaskNumber(command, "unmark ");
+
+                if (!tasks.isValidIndex(unmarkIndex)) {
+                    return "Invalid task number.";
+                }
+
+                tasks.unmarkTask(unmarkIndex);
+                storage.saveTasks(tasks.getTasks());
+
+                return "Unmarked task:\n" + tasks.getTask(unmarkIndex);
             case EVENT:
                 Task event = parser.parseEvent(command);
 

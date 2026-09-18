@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * event
@@ -41,42 +42,56 @@ public class Event extends Task {
      * @param date String input for date
      */
     public void from(String date) {
-        this.from = date;
-        try {
-            // Try yyyy-MM-dd format first
-            this.fromDate = LocalDate.parse(date);
-            validateRange();
-        } catch (DateTimeParseException e1) {
-            try {
-                // Try dd/MM/yyyy format (e.g., 2/12/2019)
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-                this.fromDate = LocalDate.parse(from, formatter);
-            } catch (DateTimeParseException e2) {
-                // If parsing fails, keep as string
-                this.fromDate = null;
-            }
+        if (date == null || date.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Event start date cannot be empty."
+            );
         }
+
+        String cleanedDate = date.trim();
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("uuuu-MM-dd")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+            fromDate = LocalDate.parse(cleanedDate, formatter);
+            from = cleanedDate;
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(
+                    "Invalid event start date: " + date
+            );
+        }
+
+        validateRange();
     }
     /**
      * Sets the due date as a date
      * @param date String input for date
      */
     public void to(String date) {
-        this.to = date;
-        try {
-            // Try yyyy-MM-dd format first
-            this.toDate = LocalDate.parse(date);
-            validateRange();
-        } catch (DateTimeParseException e1) {
-            try {
-                // Try dd/MM/yyyy format (e.g., 2/12/2019)
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-                this.toDate = LocalDate.parse(to, formatter);
-            } catch (DateTimeParseException e2) {
-                // If parsing fails, keep as string
-                this.toDate = null;
-            }
+        if (date == null || date.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Event end date cannot be empty."
+            );
         }
+
+        String cleanedDate = date.trim();
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("uuuu-MM-dd")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+            toDate = LocalDate.parse(cleanedDate, formatter);
+            to = cleanedDate;
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(
+                    "Invalid event end date: " + date
+            );
+        }
+
+        validateRange();
     }
 
     /**

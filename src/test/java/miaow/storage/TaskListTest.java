@@ -88,11 +88,22 @@ class TaskListTest {
     @Test
     void eventWithInvalidRangeIsRejectedByModel() {
         Event event = new Event("meeting");
-        event.from("2026-01-02 10:00");
+        event.from("2026-01-02");
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> event.to("09:00")
+                () -> event.to("2026-01-01")
+        );
+    }
+
+    @Test
+    void eventWithEqualStartAndEndDatesIsRejected() {
+        Event event = new Event("meeting");
+        event.from("2026-01-02");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> event.to("2026-01-02")
         );
     }
 }
