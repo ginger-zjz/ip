@@ -18,7 +18,7 @@ public class Parser {
      */
     public enum CommandType {
         BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN,
-                SORT, INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
+                SORT, MIAOW, INVALID_TODO, INVALID_DEADLINE, INVALID_EVENT
     }
 
     /**
@@ -55,6 +55,8 @@ public class Parser {
             return CommandType.FIND;
         } else if (input.equals("sort")) {
             return CommandType.SORT;
+        } else if (input.equals("miaow")) {
+            return CommandType.MIAOW;
         } else {
             return CommandType.UNKNOWN;
         }

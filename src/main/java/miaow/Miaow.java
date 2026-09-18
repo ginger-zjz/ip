@@ -37,10 +37,7 @@ public class Miaow extends Application {
     private TaskList tasks;
     private UI ui;
 
-    enum CommandType {
-        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND, UNKNOWN, INVALID_TODO, INVALID_DEADLINE,
-        INVALID_EVENT
-    }
+
 
     /**
      * Constructor for class
@@ -102,6 +99,8 @@ public class Miaow extends Application {
 
 
         switch (commandType) {
+            case MIAOW:
+                return "Miaow :3";
             case BYE:
                 storage.saveTasks(tasks.getTasks());
                 return "Goodbye!";
@@ -130,7 +129,6 @@ public class Miaow extends Application {
 
                 return "Got it. I've added this task:\n" + todo;
 
-            case DEADLINE:
             case DEADLINE:
                 Task deadline = parser.parseDeadline(command);
 
