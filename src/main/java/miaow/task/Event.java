@@ -25,6 +25,18 @@ public class Event extends Task {
     }
 
     /**
+     * checks if range of dates is positive
+     */
+    private void validateRange() {
+        if (fromDate != null && toDate != null
+                && !toDate.isAfter(fromDate)) {
+            throw new IllegalArgumentException(
+                    "Event end must be after event start."
+            );
+        }
+    }
+
+    /**
      * Sets the start date as a date
      * @param date String input for date
      */
@@ -33,6 +45,7 @@ public class Event extends Task {
         try {
             // Try yyyy-MM-dd format first
             this.fromDate = LocalDate.parse(date);
+            validateRange();
         } catch (DateTimeParseException e1) {
             try {
                 // Try dd/MM/yyyy format (e.g., 2/12/2019)
@@ -53,6 +66,7 @@ public class Event extends Task {
         try {
             // Try yyyy-MM-dd format first
             this.toDate = LocalDate.parse(date);
+            validateRange();
         } catch (DateTimeParseException e1) {
             try {
                 // Try dd/MM/yyyy format (e.g., 2/12/2019)

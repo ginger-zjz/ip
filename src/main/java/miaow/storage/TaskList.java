@@ -29,6 +29,23 @@ public class TaskList {
      * @param task The task to be added
      */
     public void addTask(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException(
+                    "Task cannot be null."
+            );
+        }
+
+        boolean duplicate = tasks.stream()
+                .anyMatch(existing ->
+                        existing.getDescription()
+                                .equalsIgnoreCase(task.getDescription()));
+
+        if (duplicate) {
+            throw new IllegalArgumentException(
+                    "A task with the same description already exists."
+            );
+        }
+
         tasks.add(task);
     }
 

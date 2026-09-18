@@ -91,7 +91,11 @@ public class Miaow extends Application {
     }
 
     public String getResponse(String command) {
-        assert command != null : "Command cannot be null";
+        if (command == null || command.trim().isEmpty()) {
+            return "Please enter a command.";
+        }
+
+        command = command.trim();
 
         Parser.CommandType commandType = parser.getCommandType(command);
         assert commandType != null : "Parser must return a command type";
@@ -110,38 +114,57 @@ public class Miaow extends Application {
 
             case TODO:
                 Task todo = parser.parseTodo(command);
+
                 if (todo == null) {
                     return "Invalid todo format.";
                 }
-                else {
-                    assert !tasks.getTasks().contains(todo)
-                            : "Task should not already exist before adding it";
 
+                try {
                     tasks.addTask(todo);
+                    storage.saveTasks(tasks.getTasks());
+                } catch (IllegalArgumentException e) {
+                    return "Error: " + e.getMessage();
+                } catch (IllegalStateException e) {
+                    return "Error: Unable to save the task.";
                 }
 
-                //tasks.addTask(todo);
-                storage.saveTasks(tasks.getTasks());
                 return "Got it. I've added this task:\n" + todo;
 
             case DEADLINE:
+            case DEADLINE:
                 Task deadline = parser.parseDeadline(command);
+
                 if (deadline == null) {
                     return "Invalid deadline format.";
                 }
 
-                tasks.addTask(deadline);
-                storage.saveTasks(tasks.getTasks());
+                try {
+                    tasks.addTask(deadline);
+                    storage.saveTasks(tasks.getTasks());
+                } catch (IllegalArgumentException e) {
+                    return "Error: " + e.getMessage();
+                } catch (IllegalStateException e) {
+                    return "Error: Unable to save the task.";
+                }
+
                 return "Got it. I've added this task:\n" + deadline;
 
             case EVENT:
                 Task event = parser.parseEvent(command);
+
                 if (event == null) {
                     return "Invalid event format.";
                 }
 
-                tasks.addTask(event);
-                storage.saveTasks(tasks.getTasks());
+                try {
+                    tasks.addTask(event);
+                    storage.saveTasks(tasks.getTasks());
+                } catch (IllegalArgumentException e) {
+                    return "Error: " + e.getMessage();
+                } catch (IllegalStateException e) {
+                    return "Error: Unable to save the task.";
+                }
+
                 return "Got it. I've added this task:\n" + event;
 
             case FIND:

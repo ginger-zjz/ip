@@ -26,6 +26,11 @@ public class Deadline extends Task {
      * @param date String input for date
      */
     public void by(String date) {
+        if (date == null || date.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Deadline date cannot be empty."
+            );
+        }
         this.by = date;
         try {
             // Try yyyy-MM-dd format first

@@ -66,7 +66,7 @@ public class Parser {
      * @return a new task
      */
     public Task parseTodo(String input) {
-        if (!input.startsWith("todo ")) {
+        if (input == null || !input.startsWith("todo ")) {
             return null;
         }
         String description = input.substring(5).trim();
@@ -82,7 +82,7 @@ public class Parser {
      * @return a new deadline
      */
     public Task parseDeadline(String input) {
-        if (!input.startsWith("deadline ")) {
+        if (input == null || !input.startsWith("deadline ")) {
             return null;
         }
         String content = input.substring(9).trim();
@@ -101,7 +101,7 @@ public class Parser {
      * @return a new event
      */
     public Task parseEvent(String input) {
-        if (!input.startsWith("event ")) {
+        if (input == null || !input.startsWith("event ")) {
             return null;
         }
         String content = input.substring(6).trim();

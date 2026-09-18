@@ -12,6 +12,11 @@ public class Task {
      * @param name
      */
     public Task(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Task description cannot be empty."
+            );
+        }
         this.taskName = name;
         this.marked = false;
     }

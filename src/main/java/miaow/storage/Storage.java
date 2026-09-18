@@ -43,20 +43,33 @@ public class Storage {
      * @param tasks The arraylist of tasks.
      */
     public void saveTasks(ArrayList<Task> tasks) {
+        if (tasks == null) {
+            throw new IllegalArgumentException(
+                    "Tasks cannot be null."
+            );
+        }
+
         try {
-            // Create directories if they don't exist
-            createDirectoryIfNeeded();
+            Path target = Paths.get(filePath);
+            Path parent = target.getParent();
 
-            // Write tasks to file
-            FileWriter writer = new FileWriter(filePath);
-            String content = tasks.stream()
-                    .map(Task::toFileFormat)
-                    .collect(Collectors.joining(System.lineSeparator()));
+            if (parent != null) {
+                Files.createDirectories(parent);
+            }
 
-            writer.write(content);
-            writer.close();
+            try (FileWriter writer = new FileWriter(filePath)) {
+                String content = tasks.stream()
+                        .map(Task::toFileFormat)
+                        .collect(Collectors.joining(
+                                System.lineSeparator()));
+
+                writer.write(content);
+            }
         } catch (IOException e) {
-            System.out.println("Error saving tasks: " + e.getMessage());
+            throw new IllegalStateException(
+                    "Unable to save tasks to " + filePath,
+                    e
+            );
         }
     }
 
