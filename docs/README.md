@@ -1,4 +1,5 @@
 # MiaowBot User Guide
+> The chatbot that miaows back
 
 ![Ui.png](Ui.png)
 
@@ -8,7 +9,7 @@ MiaowBot helps you manage three types of tasks:
 - Deadlines
 - Events
 
-You can also list, find, sort, mark, unmark, and delete tasks.
+You can also list, find, sort, mark, unmark, and delete tasks. For some fun and whimsy
 
 
 ## Adding to-dos
@@ -92,9 +93,18 @@ Use the task number shown in your list.
 Example:
 `delete 2`
 
+## Miaow
+
+Use:
+`miaow`
+
+To say hi to the bot :)
+
 ## Exiting MiaowBot
 
 Use:
 `bye`
 
 Your tasks will be saved automatically when you exit.
+
+
