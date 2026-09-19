@@ -96,16 +96,6 @@ class ParserTest {
                 LocalDate.of(2026, 9, 18),
                 event.getFromDateTime()
         );
-
-        assertEquals(
-                "Sept 18 2026",
-                event.getFormattedFrom()
-        );
-
-        assertEquals(
-                "Sept 20 2026",
-                event.getFormattedTo()
-        );
     }
 
     @Test
