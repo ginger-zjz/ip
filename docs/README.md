@@ -1,6 +1,6 @@
 # MiaowBot User Guide
 
-<img width="426" height="787" alt="Ui" src="https://github.com/user-attachments/assets/7fc75923-eb28-4598-99c2-4c9be77b5448" />
+![Ui.png](Ui.png)
 
 MiaowBot helps you manage three types of tasks:
 
