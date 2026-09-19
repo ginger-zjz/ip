@@ -47,6 +47,7 @@ dependencies {
     implementation("org.openjfx:javafx-controls:${javaFxVersion}:${javafxPlatform}")
     implementation("org.openjfx:javafx-fxml:${javaFxVersion}:${javafxPlatform}")
     implementation("org.openjfx:javafx-graphics:${javaFxVersion}:${javafxPlatform}")
+    implementation("org.openjfx:javafx-media:${javaFxVersion}:${javafxPlatform}")
     //String javaFxVersion = '17.0.7'
 
 //    implementation("org.openjfx:javafx-base:${javaFxVersion}:win")

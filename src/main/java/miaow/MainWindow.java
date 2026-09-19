@@ -1,6 +1,8 @@
 package miaow;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Pos;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -8,10 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import java.net.URL;
 import miaow.gui.DialogBox;
 
 import java.io.InputStream;
 import java.util.Objects;
+
 
 /**
  * Mainwindow
@@ -30,10 +35,41 @@ public class MainWindow extends AnchorPane {
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/Miaowuser.png"));
     private Image miaowImage = new Image(this.getClass().getResourceAsStream("/images/Miaowoiia.png"));
+    private final AudioClip miaowSound = loadSound("/sounds/cat-meow.mp3");
+    private final AudioClip angrySound = loadSound("/sounds/cat-angry.mp3");
 
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.setAlignment(Pos.BOTTOM_LEFT);
+
+        dialogContainer.minHeightProperty().bind(
+                Bindings.createDoubleBinding(
+                        () -> scrollPane.getViewportBounds().getHeight(),
+                        scrollPane.viewportBoundsProperty()
+                )
+        );
+    }
+
+    /**
+     * loads a sound
+     * @param resourcePath
+     * @return Audioclip of the sound
+     */
+    private static AudioClip loadSound(String resourcePath) {
+        URL soundUrl = MainWindow.class.getResource(resourcePath);
+
+        if (soundUrl == null) {
+            return null;
+        }
+
+        return new AudioClip(soundUrl.toExternalForm());
+    }
+
+    private boolean isErrorResponse(String response) {
+        return response.startsWith("Error:")
+                || response.startsWith("Invalid")
+                || response.startsWith("Please")
+                || response.startsWith("Sorry");
     }
 
     /** Injects the Duke instance */
@@ -61,12 +97,24 @@ public class MainWindow extends AnchorPane {
 
         String response = miaow.getResponse(input);
 
+        if (isErrorResponse(response)) {
+            if (angrySound != null) {
+                angrySound.play();
+            }
+        } else {
+            if (miaowSound != null) {
+                miaowSound.play();
+            }
+        }
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getMiaowDialog(response, miaowImage)
         );
 
         userInput.clear();
+
+        Platform.runLater(() -> scrollPane.setVvalue(1.0));
 
         if (miaow.isExitCommand(input)) {
             Platform.exit();

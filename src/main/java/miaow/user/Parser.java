@@ -54,9 +54,11 @@ public class Parser {
             return CommandType.FIND;
         } else if (input.equals("sort")) {
             return CommandType.SORT;
+        } else if (input.equals("miaow")) {
+            return CommandType.MIAOW;
+        } else {
+            return CommandType.UNKNOWN;
         }
-
-        return CommandType.UNKNOWN;
     }
 
     /**
