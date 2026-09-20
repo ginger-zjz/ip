@@ -40,13 +40,18 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
-        dialogContainer.setAlignment(Pos.BOTTOM_LEFT);
+        dialogContainer.setFillWidth(true);
+        dialogContainer.setSpacing(8);
+        dialogContainer.setAlignment(Pos.TOP_LEFT);
+
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(false);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         dialogContainer.minHeightProperty().bind(
-                Bindings.createDoubleBinding(
-                        () -> scrollPane.getViewportBounds().getHeight(),
-                        scrollPane.viewportBoundsProperty()
-                )
+                scrollPane.viewportBoundsProperty()
+                        .map(bounds -> bounds.getHeight())
         );
     }
 
