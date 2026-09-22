@@ -52,7 +52,7 @@ Got it! I've added this task:
 ## Viewing your tasks
 
 Use
-```list```
+`list`
 
 
 ## Marking as done

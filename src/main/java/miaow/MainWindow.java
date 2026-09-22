@@ -50,8 +50,10 @@ public class MainWindow extends AnchorPane {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         dialogContainer.minHeightProperty().bind(
-                scrollPane.viewportBoundsProperty()
-                        .map(bounds -> bounds.getHeight())
+                Bindings.createDoubleBinding(
+                        () -> scrollPane.getViewportBounds().getHeight(),
+                        scrollPane.viewportBoundsProperty()
+                )
         );
     }
 
